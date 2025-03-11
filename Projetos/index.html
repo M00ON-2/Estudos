@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta Animada</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="text">
+                        <strong>Minha amada.</strong>
+                        <p>
+                            Teamo
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="heart"></div>
+        </div>
+    </div>
+    <script>
+        const envelope = document.querySelector('.envelope-wrapper');
+        const heart = document.querySelector('.heart');
+        const letter = document.querySelector('.letter');
+
+        envelope.addEventListener('click', () => {
+            envelope.classList.toggle('flap');
+        });
+
+        heart.addEventListener('click', (event) => {
+            event.stopPropagation(); // Evita que o clique no coração também ative o envelope
+            letter.classList.add('fullscreen');
+        });
+
+        letter.addEventListener('click', () => {
+            letter.classList.remove('fullscreen'); // Ao clicar na carta, ela volta ao normal
+        });
+    </script>
+</body>
+</html>
