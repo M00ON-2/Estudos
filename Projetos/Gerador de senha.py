@@ -22,9 +22,3 @@ class Senha:
 senha1 = Senha()
 print("Senha gerada:", senha1.valor)
 print("É uma senha segura?", senha1.validar_senha())
-a
-a
-a
-a
-a
-a
