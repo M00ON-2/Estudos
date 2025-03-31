@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplicativo de Clima</title>
-    <style>
+    <style> /* estilo da base */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
+            background-color: #eaf0f2;
             margin: 0;
             padding: 0;
             display: flex;
@@ -40,6 +40,44 @@
             height: 50px;
         }
     </style>
+<header> 
+    <style> /* estilo do cabeçalho */
+        header {
+          background-color: #2a2a32;
+          height: 80px;
+          width: 100%;
+          position: fixed;
+          top: 0;
+          left: 0;
+        }
+   
+    .search-box {
+      width: 300px;
+      height: 30px;
+      padding: 10px;
+      margin: 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #fff;
+      background-image: url('imagem.jpg'); /* adiciono a imagem na caixa de pesquisa */
+      background-size: 20px 20px; /* define o tamanho da imagem */
+      background-position: left 10px center; /*  a posição da imagem */
+      background-repeat: no-repeat; /* imagem não vai se repetir  */
+    }
+
+      </style>
+
+ <input type="search" class="search-box" placeholder="Pesquisar...">
+ 
+    <script>
+      const searchBtn = document.querySelector('.search-btn');
+    const searchBox = document.querySelector('.search-box');
+
+    searchBtn.addEventListener('click', () => {
+      searchBox.classList.toggle('show'); /* adicionamos ou removemos a classe show para mostrar ou esconder a caixa de pesquisa */
+    });   
+    </script>
+</header>
 </head>
 <body>
 
