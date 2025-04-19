@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .fundo {
+            background-image: linear-gradient(45deg, rgb(156, 2, 2), rgb(126, 15, 148));
+            height: 100vh;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .calculadora {
+            background-color: black;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .resultado-container {
+            background-color: white;
+            color: black;
+            padding: 10px;
+            text-align: right;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .botao {
+            width: 50px;
+            height: 50px;
+            font-size: 25px;
+            margin: 2px;
+            cursor: pointer;
+            background-color: rgb(31, 31, 31);
+            border: none;
+            color: white;
+        }
+
+        .botao:hover {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="fundo">
+        <h1>Calculadora</h1>
+        <div class="calculadora">
+            <div class="resultado-container">
+                <p id="resultado">0</p>
+            </div>
+            <table>
+                <tr>
+                    <td><button class="botao">C</button></td>
+                    <td><button class="botao"><</button></td>
+                    <td><button class="botao">/</button></td>
+                    <td><button class="botao">*</button></td>
+                </tr>
+                <tr>
+                    <td><button class="botao">7</button></td>
+                    <td><button class="botao">8</button></td>
+                    <td><button class="botao">9</button></td>
+                    <td><button class="botao">-</button></td>
+                </tr>
+                <tr>
+                    <td><button class="botao">6</button></td>
+                    <td><button class="botao">5</button></td>
+                    <td><button class="botao">4</button></td>
+                    <td><button class="botao">+</button></td>
+                </tr>
+                <tr>
+                    <td><button class="botao">1</button></td>
+                    <td><button class="botao">2</button></td>
+                    <td><button class="botao">3</button></td>
+                    <td rowspan="2"><button class="botao" style="height:106px;">=</button></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="botao" style="width: 106px;">0</button></td>
+                    <td><button class="botao">.</button></td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+</body>
+<script>
+    let resultado = document.getElementById("resultado");
+    let currentInput = "";
+    let isResultDisplayed = false; // Controla se o último resultado foi exibido
+
+    function updateDisplay(value) {
+        if (isResultDisplayed) {
+            currentInput = "";  // Apaga o resultado anterior ao começar um novo número
+            isResultDisplayed = false;
+        }
+        currentInput += value;
+        resultado.textContent = currentInput;
+    }
+
+    function calculate() {
+        try {
+            currentInput = currentInput.replace(/X/g, "*"); // Corrige a multiplicação
+            currentInput = eval(currentInput).toString();
+            resultado.textContent = currentInput;
+            isResultDisplayed = true; // Marca que o resultado foi mostrado
+        } catch (e) {
+            resultado.textContent = "Erro";
+            currentInput = "";
+        }
+    }
+
+    function clearScreen() {
+        currentInput = "";
+        resultado.textContent = "0";
+        isResultDisplayed = false;
+    }
+
+    function backspace() {
+        if (isResultDisplayed) {
+            clearScreen(); // Se o último resultado foi mostrado, limpa tudo
+        } else {
+            currentInput = currentInput.slice(0, -1);
+            resultado.textContent = currentInput || "0";
+        }
+    }
+
+    document.querySelectorAll(".botao").forEach(function(button) {
+        button.addEventListener("click", function() {
+            let value = this.textContent;
+            if (value === "C") {
+                clearScreen();
+            } else if (value === "<") {
+                backspace();
+            } else if (value === "=") {
+                calculate();
+            } else {
+                updateDisplay(value);
+            }
+        });
+    });
+</script>    
+</html>

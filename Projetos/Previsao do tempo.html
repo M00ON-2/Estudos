@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicativo de Clima</title>
+    <style> /* estilo da base */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eaf0f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #weather {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        #icon {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+<header> 
+    <style> /* estilo do cabeçalho */
+        header {
+          background-color: #2a2a32;
+          height: 80px;
+          width: 100%;
+          position: fixed;
+          top: 0;
+          left: 0;
+        }
+   
+    .search-box {
+      width: 300px;
+      height: 30px;
+      padding: 10px;
+      margin: 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #fff;
+      background-image: url('imagem.jpg'); /* adiciono a imagem na caixa de pesquisa */
+      background-size: 20px 20px; /* define o tamanho da imagem */
+      background-position: left 10px center; /*  a posição da imagem */
+      background-repeat: no-repeat; /* imagem não vai se repetir  */
+    }
+
+      </style>
+
+ <input type="search" class="search-box" placeholder="Pesquisar...">
+ 
+    <script>
+      const searchBtn = document.querySelector('.search-btn');
+    const searchBox = document.querySelector('.search-box');
+
+    searchBtn.addEventListener('click', () => {
+      searchBox.classList.toggle('show'); /* adicionamos ou removemos a classe show para mostrar ou esconder a caixa de pesquisa */
+    });   
+    </script>
+</header>
+</head>
+<body>
+
+    <div id="weather">
+        <h1>Clima em <span id="city">Sao Paulo</span></h1>
+        <img id="icon" src="" alt="Ícone do clima">
+        <p>Temperatura: <span id="temp">0</span>°C</p>
+        <p>Condição: <span id="condition">Carregando...</span></p>
+        <p>Umidade: <span id="humidity">0</span>%</p>
+        <p>Vento: <span id="windspeed">0</span> m/s</p>
+    </div>
+
+    <script>
+        // Substitua com sua chave de API real
+        const apiKey = '479d45286c35507fd8d2767ccd0758d3';
+        const city = 'Sao Paulo';  // Ou você pode pegar isso com a localização do usuário
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+        // Função para buscar dados de clima
+        function fetchData() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const temperature = data.main.temp;
+                    const weatherDescription = data.weather[0].description;
+                    const humidity = data.main.humidity;
+                    const windSpeed = data.wind.speed;
+                    const iconCode = data.weather[0].icon;
+                    const iconUrl = `http://openweathermap.org/img/wn/${iconCode}.png`;
+
+                    // Atualiza os elementos no HTML com os dados recebidos
+                    document.getElementById('temp').textContent = temperature.toFixed(2);
+                    document.getElementById('condition').textContent = weatherDescription;
+                    document.getElementById('humidity').textContent = humidity;
+                    document.getElementById('windspeed').textContent = windSpeed;
+                    document.getElementById('icon').src = iconUrl;
+                })
+                .catch(error => console.error('Erro ao obter dados:', error));
+        }
+
+        // Chama a função para buscar dados assim que a página carregar
+        fetchData();
+
+        // Atualiza os dados a cada 10 minutos (600000ms)
+        setInterval(fetchData, 600000);
+    </script>
+
+</body>
+</html>
