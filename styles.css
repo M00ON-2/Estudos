@@ -1,0 +1,92 @@
+/* Estilo da base */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #eaf0f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Caixa do clima */
+#weather {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+p {
+    font-size: 18px;
+    color: #555;
+}
+
+#icon {
+    width: 50px;
+    height: 50px;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #322d2a;
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* Container da busca */
+.container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Botão de busca */
+.button {
+    width: 60px;
+    height: 80px;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    background-image: url('assets/lupa.png');
+    background-size: 70px 70px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+/* Campo de pesquisa */
+.search {
+    width: 230px;
+    height: 30px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 11px;
+    outline: none;
+}
+
+.icon-small {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.icon-temp {
+    width: 18px;
+    height: 25px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
