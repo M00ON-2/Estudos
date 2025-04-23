@@ -2,7 +2,7 @@ import random
 import string
 
 class Senha:
-    def __init__(bla, self, tamanho=12):
+    def __init__( self, tamanho=12):
         self.tamanho = tamanho
         self.valor = self.gerar_senha()
 
