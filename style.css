@@ -1,0 +1,87 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+  padding: 40px;
+  text-align: center;
+}
+
+.quiz-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 0 10px #ccc;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.option {
+  margin: 10px 0;
+  background: #e0e0e0;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background: #d0d0d0;
+}
+
+.correct {
+  background-color: #a0e6a0;
+}
+
+.incorrect {
+  background-color: #f8a0a0;
+}
+
+.hidden {
+  display: none;
+}
+
+#reward {
+  margin-top: 30px;
+  background: #e0ffe0;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.shop-item {
+  margin-top: 15px;
+  padding: 10px;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); background-color: #e0ffe0; }
+  50% { transform: scale(1.05); background-color: #c8ffc8; }
+  100% { transform: scale(1); background-color: #e0ffe0; }
+}
+
+.shop-item.purchased {
+  animation: pulse 0.5s ease;
+  border: 2px solid green;
+}
+
+.purchase-message {
+  color: green;
+  font-weight: bold;
+  margin-top: 5px;
+  animation: fadeout 2s ease forwards;
+}
+
+@keyframes fadeout {
+  0% { opacity: 1; }
+  100% { opacity: 0; display: none; }
+}
